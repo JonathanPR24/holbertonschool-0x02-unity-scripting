@@ -1,4 +1,5 @@
 ﻿﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -56,5 +57,34 @@ public class PlayerController : MonoBehaviour
             // Write the new value of health to the console
             Debug.Log("Health: " + health);
         }
+
+        if (other.CompareTag("Goal"))
+        {
+            // Player reached the goal
+            Debug.Log("You win!");
+        }
+    }
+
+    void Update()
+    {
+        // Check if health equals 0
+        if (health == 0)
+        {
+            // Print Game Over! to the console
+            Debug.Log("Game Over!");
+
+            // Reload the scene
+            ReloadScene();
+        }
+    }
+
+    void ReloadScene()
+    {
+        // Reset health and score to their original values
+        health = 5;
+        score = 0;
+
+        // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
