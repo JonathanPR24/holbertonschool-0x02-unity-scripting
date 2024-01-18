@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 5f; // Adjust this value in the Inspector to change player speed
     private int score = 0; // New score variable
+    public int health = 5; // New health variable
 
     void Start()
     {
@@ -45,6 +46,15 @@ public class PlayerController : MonoBehaviour
 
             // Disable or destroy the Coin object
             Destroy(other.gameObject);
+        }
+
+        if (other.CompareTag("Trap"))
+        {
+            // Decrement health when the Player touches an object tagged Trap
+            health--;
+
+            // Write the new value of health to the console
+            Debug.Log("Health: " + health);
         }
     }
 }
