@@ -1,11 +1,14 @@
 ﻿﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f; // Adjust this value in the Inspector to change player speed
-    private int score = 0; // New score variable
-    public int health = 5; // New health variable
+    public float speed = 5f;
+    private int score = 0;
+    public int health = 5;
+
+    // Add two public variables to store references to the teleporter planes
+    public GameObject teleporterPlane1;
+    public GameObject teleporterPlane2;
 
     void Start()
     {
@@ -41,11 +44,7 @@ public class PlayerController : MonoBehaviour
         {
             // Increment score when the Player touches an object tagged Pickup
             score++;
-
-            // Write the new value of score to the console
             Debug.Log("Score: " + score);
-
-            // Disable or destroy the Coin object
             Destroy(other.gameObject);
         }
 
@@ -53,38 +52,30 @@ public class PlayerController : MonoBehaviour
         {
             // Decrement health when the Player touches an object tagged Trap
             health--;
-
-            // Write the new value of health to the console
             Debug.Log("Health: " + health);
         }
 
         if (other.CompareTag("Goal"))
         {
-            // Player reached the goal
             Debug.Log("You win!");
         }
-    }
 
-    void Update()
-    {
-        // Check if health equals 0
-        if (health == 0)
+        // Check if the player touches teleporterPlane1
+        if (other.gameObject == teleporterPlane1)
         {
-            // Print Game Over! to the console
-            Debug.Log("Game Over!");
+            TeleportPlayer(teleporterPlane2);
+        }
 
-            // Reload the scene
-            ReloadScene();
+        // Check if the player touches teleporterPlane2
+        if (other.gameObject == teleporterPlane2)
+        {
+            TeleportPlayer(teleporterPlane1);
         }
     }
 
-    void ReloadScene()
+    void TeleportPlayer(GameObject targetTeleporter)
     {
-        // Reset health and score to their original values
-        health = 5;
-        score = 0;
-
-        // Reload the current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Teleport the player to the position of the targetTeleporter
+        transform.position = targetTeleporter.transform.position;
     }
 }
